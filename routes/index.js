@@ -1,11 +1,16 @@
 var express = require('express');
 var router = express.Router();
 const cJson = require('circular-json');
+var fb_parser = require('fb-signed-parser');
+
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', req:cJson.stringify(req) });
+  res.render('index', { title: 'Express', req:cJson.stringify(req), signature:'Not set' });
+});
+router.post('/', function(req, res, next) {
+  res.render('index', { title: 'Express', req:cJson.stringify(req), signature:JSON.stringify(fb_parser.parse(req.param('signed_request'))) });
 });
 
 router.get('/about', function(req, res, next) {
